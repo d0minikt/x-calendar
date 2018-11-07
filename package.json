@@ -33,7 +33,7 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "publish": "npm run build; move build/index.html build/200.html; npx surge -p build -d x-calendar.surge.sh"
+    "publish": "powershell react-scripts build ; move build/index.html build/200.html ; npx surge -p build -d x-calendar.surge.sh"
   },
   "eslintConfig": {
     "extends": "react-app"
