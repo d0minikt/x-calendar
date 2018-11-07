@@ -1,0 +1,1 @@
+declare module "google-client-api";

@@ -21,7 +21,7 @@ import {
 
 import MenuIcon from "@material-ui/icons/Menu";
 import HomeIcon from "@material-ui/icons/Home";
-import AddCircleOutlineIcon from "@material-ui/icons/AddCircleOutline";
+import ExitToAppIcon from "@material-ui/icons/ExitToApp";
 import ColorLensIcon from "@material-ui/icons/ColorLens";
 
 import { RouterStore } from "mobx-react-router";
@@ -29,6 +29,7 @@ import { inject, observer } from "mobx-react";
 
 import Container from "../Container/Container";
 import { AppStore } from "../../services/app.store";
+import { ApiStore } from "../../services/api/api.store";
 
 class LayoutRoute {
   constructor(
@@ -38,10 +39,7 @@ class LayoutRoute {
   ) {}
 }
 
-const routes: LayoutRoute[] = [
-  new LayoutRoute("/", "Home", <HomeIcon />),
-  new LayoutRoute("/counter", "Counter", <AddCircleOutlineIcon />)
-];
+const routes: LayoutRoute[] = [new LayoutRoute("/", "Home", <HomeIcon />)];
 
 const drawerWidth = 240;
 
@@ -82,9 +80,10 @@ interface DefaultLayoutProps extends WithStyles<typeof styles> {
   theme: Theme;
   router?: RouterStore;
   app?: AppStore;
+  api?: ApiStore;
 }
 
-@inject("router", "app")
+@inject("router", "app", "api")
 @observer
 class DefaultLayout extends React.Component<DefaultLayoutProps> {
   state = {
@@ -128,6 +127,7 @@ class DefaultLayout extends React.Component<DefaultLayoutProps> {
   render() {
     const { classes, theme } = this.props;
     const { themes } = this.props.app!;
+    const { signOut } = this.props.api!;
 
     const isDark = theme.palette.type === "dark";
 
@@ -192,6 +192,9 @@ class DefaultLayout extends React.Component<DefaultLayoutProps> {
             <div style={{ flex: "1 1" }} />
             <IconButton color="inherit" onClick={this.openMenu}>
               <ColorLensIcon />
+            </IconButton>
+            <IconButton color="inherit" onClick={signOut}>
+              <ExitToAppIcon />
             </IconButton>
             <Menu
               open={this.state.themeMenuEl !== null}

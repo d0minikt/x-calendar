@@ -10,7 +10,14 @@ import HomePage from "./pages/Home/Home";
 import CounterPage from "./pages/Counter/Counter";
 import NotFoundPage from "./pages/NotFound/NotFound";
 import { inject, observer } from "mobx-react";
-import { WithStyles, Theme, createStyles, withStyles } from "@material-ui/core";
+import {
+  WithStyles,
+  Theme,
+  createStyles,
+  withStyles,
+  Button
+} from "@material-ui/core";
+import { ApiStore } from "./services/api/api.store";
 
 const styles = (theme: Theme) =>
   createStyles({
@@ -25,9 +32,10 @@ const styles = (theme: Theme) =>
 
 interface AppProps extends WithStyles<typeof styles> {
   router?: RouterStore;
+  api?: ApiStore;
 }
 
-@inject("router")
+@inject("router", "api")
 @observer
 class App extends Component<AppProps> {
   private browserHistory = createBrowserHistory();
@@ -36,8 +44,24 @@ class App extends Component<AppProps> {
     this.props.router!
   );
 
+  componentWillMount() {
+    const url = new URL(window.location.href);
+    if (url.protocol === "http:" && url.host === "x-calendar.surge.sh")
+      window.location.replace("https://x-calendar.surge.sh");
+
+    this.props.api!.fetchApi().then(() => this.forceUpdate());
+  }
+
   render() {
     const { classes } = this.props;
+    const { isSignedIn, signIn, calendars, gapi } = this.props.api!;
+
+    if (calendars.length === 0 && isSignedIn) return "Loading";
+    if (!isSignedIn) {
+      if (Object.keys(gapi).length === 0) return "loading";
+      return <Button onClick={signIn}>sign in</Button>;
+    }
+
     return (
       <div className={classes.root}>
         <Router history={this.history}>

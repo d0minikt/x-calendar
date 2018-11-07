@@ -7,6 +7,7 @@ import { RouterStore } from "mobx-react-router";
 import DevTools from "mobx-react-devtools";
 import { create } from "mobx-persist";
 import { AppStore } from "./services/app.store";
+import { ApiStore } from "./services/api/api.store";
 
 // theming
 import {
@@ -20,6 +21,7 @@ import * as serviceWorker from "./serviceWorker";
 
 const store: { [key: string]: any } = {
   app: new AppStore(),
+  api: new ApiStore(),
   router: new RouterStore()
 };
 

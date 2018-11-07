@@ -4,7 +4,6 @@ import { ThemeOptions } from "@material-ui/core/styles/createMuiTheme";
 import * as colors from "@material-ui/core/colors";
 
 export class AppStore {
-  @persist("object")
   @observable
   themes: { [key: string]: ThemeOptions } = {
     default: {
@@ -55,6 +54,14 @@ export class AppStore {
         MuiDrawer: {
           // paper: { background: "#fff" }
         }
+      },
+      typography: { useNextVariants: true }
+    },
+    "light pink": {
+      palette: {
+        background: { default: "#fff", paper: "#ffedf3" },
+        primary: { main: "#ffc1d8" },
+        secondary: { main: colors.pink["A400"] }
       },
       typography: { useNextVariants: true }
     }

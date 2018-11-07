@@ -1,28 +1,24 @@
 import * as React from "react";
-import DefaultLayout from "../../components/DefaultLayout/DefaultLayout";
 import styles from "./Home.module.css";
-import Logo from "./Logo";
+import DefaultLayout from "../../components/DefaultLayout/DefaultLayout";
+import { Paper } from "@material-ui/core";
+import WeeklyChart from "../../components/WeeklyChart/WeeklyChart";
+import { inject, observer } from "mobx-react";
+import { ApiStore } from "../../services/api/api.store";
 
-export default class HomePage extends React.Component {
+interface HomePageProps {
+  api?: ApiStore;
+}
+
+@inject("api")
+@observer
+export default class HomePage extends React.Component<HomePageProps> {
   render() {
     return (
       <DefaultLayout>
-        <div className={styles.app}>
-          <header className={styles.header}>
-            <Logo className={styles.logo} />
-            <p>
-              Edit <code>src/App.tsx</code> and save to reload.
-            </p>
-            <a
-              className={styles.link}
-              href="https://reactjs.org"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Learn React
-            </a>
-          </header>
-        </div>
+        <Paper className={styles.paper} style={{ borderRadius: 10 }}>
+          <WeeklyChart calendars={this.props.api!.calendars} />
+        </Paper>
       </DefaultLayout>
     );
   }

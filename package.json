@@ -19,6 +19,7 @@
     "mobx-react": "^5.3.6",
     "mobx-react-devtools": "^6.0.3",
     "mobx-react-router": "^4.0.5",
+    "moment": "^2.22.2",
     "react": "^16.6.0",
     "react-dom": "^16.6.0",
     "react-router-dom": "^4.3.1",
