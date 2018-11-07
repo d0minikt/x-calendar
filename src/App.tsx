@@ -8,7 +8,9 @@ import { syncHistoryWithStore, RouterStore } from "mobx-react-router";
 // pages
 import HomePage from "./pages/Home/Home";
 import CounterPage from "./pages/Counter/Counter";
+import LoginPage from "./pages/Login/Login";
 import NotFoundPage from "./pages/NotFound/NotFound";
+
 import { inject, observer } from "mobx-react";
 import {
   WithStyles,
@@ -54,12 +56,16 @@ class App extends Component<AppProps> {
 
   render() {
     const { classes } = this.props;
-    const { isSignedIn, signIn, calendars, gapi } = this.props.api!;
+    const { isSignedIn, calendars, gapi } = this.props.api!;
 
     if (calendars.length === 0 && isSignedIn) return "Loading";
     if (!isSignedIn) {
       if (Object.keys(gapi).length === 0) return "loading";
-      return <Button onClick={signIn}>sign in</Button>;
+      return (
+        <div className={classes.root}>
+          <LoginPage />
+        </div>
+      );
     }
 
     return (
