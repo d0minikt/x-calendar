@@ -1,0 +1,13 @@
+.vertical-container {
+  padding: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.counter {
+  text-align: center;
+  font-family: Roboto Mono, monospace !important;
+  padding: 20px;
+  font-size: 70px !important;
+}
