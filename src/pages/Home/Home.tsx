@@ -10,7 +10,7 @@ import {
 } from "@material-ui/core";
 import { inject, observer } from "mobx-react";
 import { ApiStore } from "../../services/api/api.store";
-import moment from "moment";
+import moment, { Moment } from "moment";
 
 import LeftIcon from "@material-ui/icons/KeyboardArrowLeftOutlined";
 import RightIcon from "@material-ui/icons/KeyboardArrowRightOutlined";
@@ -29,6 +29,8 @@ interface HomePageProps extends WithStyles<typeof styles> {
   router?: RouterStore;
 }
 
+const DISPLAY_FORMAT = "Do MMM";
+
 @inject("api", "router")
 @observer
 class HomePage extends React.Component<HomePageProps> {
@@ -44,15 +46,20 @@ class HomePage extends React.Component<HomePageProps> {
     this.setState({ week: this.state.week + 1 });
   };
 
+  get start(): Moment {
+    return moment()
+      .set("isoWeek", this.state.week)
+      .startOf("isoWeek");
+  }
+
+  get end(): Moment {
+    return moment()
+      .set("isoWeek", this.state.week)
+      .endOf("isoWeek");
+  }
+
   lengthInWeek = (events: CalendarEvent[], week: number): number => {
-    const filter = isBetween(
-      moment()
-        .set("isoWeek", week)
-        .startOf("isoWeek"),
-      moment()
-        .set("isoWeek", week)
-        .endOf("isoWeek")
-    );
+    const filter = isBetween(this.start, this.end);
     return totalLength(events.filter(filter));
   };
 
@@ -77,9 +84,9 @@ class HomePage extends React.Component<HomePageProps> {
       length: this.lengthInWeek(c.events, week)
     }));
 
-    console.log(calendarItems);
-
-    const selected = calendarItems;
+    const weekStartString = this.start.format(DISPLAY_FORMAT);
+    const weekEndString = this.end.format(DISPLAY_FORMAT);
+    const weekRangeString = `${weekStartString} - ${weekEndString}`;
 
     return (
       <DefaultLayout>
@@ -98,7 +105,7 @@ class HomePage extends React.Component<HomePageProps> {
           </IconButton>
           <div style={{ textAlign: "center", padding: "10px 0" }}>
             <Typography variant="h3">Weekly</Typography>
-            <Typography variant="subtitle1">Week {week}</Typography>
+            <Typography variant="subtitle1">{weekRangeString}</Typography>
           </div>
           <IconButton
             disabled={moment().isoWeek() === week}
@@ -107,7 +114,10 @@ class HomePage extends React.Component<HomePageProps> {
             <RightIcon />
           </IconButton>
         </div>
-        <PieChartView items={selected} onItemChange={this.handleItemChange} />
+        <PieChartView
+          items={calendarItems}
+          onItemChange={this.handleItemChange}
+        />
       </DefaultLayout>
     );
   }
