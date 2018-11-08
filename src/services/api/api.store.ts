@@ -84,10 +84,9 @@ export class ApiStore {
         calendarId: calendarId,
         timeMin: moment()
           .subtract(1, "year")
-          .startOf("week")
           .toISOString(),
         timeMax: moment()
-          .endOf("week")
+          .endOf("isoWeek")
           .toISOString(),
         singleEvents: true,
         orderBy: "startTime"

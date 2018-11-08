@@ -14,7 +14,11 @@ import moment from "moment";
 
 import LeftIcon from "@material-ui/icons/KeyboardArrowLeftOutlined";
 import RightIcon from "@material-ui/icons/KeyboardArrowRightOutlined";
-import { totalLength } from "../../services/api/calendar";
+import {
+  totalLength,
+  isBetween,
+  CalendarEvent
+} from "../../services/api/calendar";
 import { RouterStore } from "mobx-react-router";
 import PieChartView from "../../components/WeeklyChart/PieChartView";
 
@@ -40,10 +44,23 @@ class HomePage extends React.Component<HomePageProps> {
     this.setState({ week: this.state.week + 1 });
   };
 
-  getTotal = (week: number) =>
-    this.props
-      .api!.calendars.map(c => totalLength(c, week))
+  lengthInWeek = (events: CalendarEvent[], week: number): number => {
+    const filter = isBetween(
+      moment()
+        .set("isoWeek", week)
+        .startOf("isoWeek"),
+      moment()
+        .set("isoWeek", week)
+        .endOf("isoWeek")
+    );
+    return totalLength(events.filter(filter));
+  };
+
+  getTotal = (week: number) => {
+    return this.props
+      .api!.calendars.map(c => this.lengthInWeek(c.events, week))
       .reduce((a: number, b: number) => a + b, 0);
+  };
 
   handleItemChange = (name: string) => {
     this.props.router!.history.push(`/calendar/${name}`);
@@ -57,8 +74,10 @@ class HomePage extends React.Component<HomePageProps> {
     const calendarItems = calendars.map(c => ({
       title: c.summary,
       background: c.backgroundColor,
-      length: totalLength(c, week)
+      length: this.lengthInWeek(c.events, week)
     }));
+
+    console.log(calendarItems);
 
     const selected = calendarItems;
 

@@ -64,7 +64,7 @@ class CalendarViewPage extends React.Component<
 
     const week = moment().isoWeek();
 
-    const events = calendar.events[week];
+    const events = calendar.events;
 
     for (let i in events) {
       const ev = events[i];

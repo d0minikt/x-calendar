@@ -30,33 +30,28 @@ export class Calendar {
     );
   }
 
-  events: { [key: number]: CalendarEvent[] } = {};
   totalLength: number = 0;
 
   constructor(
     public id: string,
     public summary: string,
     public backgroundColor: string,
-    events: CalendarEvent[]
+    public events: CalendarEvent[]
   ) {
     for (let ev of events) {
       this.totalLength += ev.duration;
-      const weekOfTheYear = moment(ev.start).isoWeek();
-      if (!(weekOfTheYear in this.events)) {
-        this.events[weekOfTheYear] = [];
-      }
-      this.events[weekOfTheYear].push(ev);
     }
   }
 }
 
-export const totalLength = (calendar: Calendar, week: number): number => {
-  if (!(week in calendar.events)) return 0;
-  return calendar.events[week]
-    .filter(ev => moment(ev.start).isBefore(moment()))
-    .map((ev: CalendarEvent) => ev.duration)
-    .reduce((a: number, b: number) => a + b, 0);
+export const totalLength = (events: CalendarEvent[]): number => {
+  return events.reduce((a: number, b: CalendarEvent) => a + b.duration, 0);
 };
+
+export const isBetween = (min: Moment, max: Moment) => (event: CalendarEvent) =>
+  moment(event.start).isAfter(min) &&
+  moment(event.end).isBefore(max) &&
+  moment(event.end).isBefore(moment());
 
 export class CalendarEvent {
   static fromObject(ev: any): CalendarEvent {
