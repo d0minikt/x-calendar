@@ -45,20 +45,18 @@ class HomePage extends React.Component<HomePageProps> {
     this.setState({ week: this.state.week + 1 });
   };
 
-  get start(): Moment {
-    return moment()
-      .set("isoWeek", this.state.week)
+  getStart = (week: number): Moment =>
+    moment()
+      .set("isoWeek", week)
       .startOf("isoWeek");
-  }
 
-  get end(): Moment {
-    return moment()
-      .set("isoWeek", this.state.week)
+  getEnd = (week: number): Moment =>
+    moment()
+      .set("isoWeek", week)
       .endOf("isoWeek");
-  }
 
   lengthInWeek = (events: CalendarEvent[], week: number): number => {
-    const filter = isBetween(this.start, this.end);
+    const filter = isBetween(this.getStart(week), this.getEnd(week));
     return totalLength(events.filter(filter));
   };
 
@@ -83,8 +81,8 @@ class HomePage extends React.Component<HomePageProps> {
       length: this.lengthInWeek(c.events, week)
     }));
 
-    const weekStartString = this.start.format(DISPLAY_FORMAT);
-    const weekEndString = this.end.format(DISPLAY_FORMAT);
+    const weekStartString = this.getStart(week).format(DISPLAY_FORMAT);
+    const weekEndString = this.getEnd(week).format(DISPLAY_FORMAT);
     const weekRangeString = `${weekStartString} - ${weekEndString}`;
 
     return (
