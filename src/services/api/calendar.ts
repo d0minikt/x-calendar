@@ -7,7 +7,7 @@ export const formatMinutes = (
   if (includeDays) {
     let d = Math.floor(mins / 60 / 24);
     let h = Math.floor((mins / 60) % 24);
-    let m = (mins % 60) % 24;
+    let m = mins % 60;
     return `${d === 0 ? "" : `${d}d`} ${h === 0 ? "" : `${h}h`} ${
       m === 0 ? "" : `${m}m`
     }`;
