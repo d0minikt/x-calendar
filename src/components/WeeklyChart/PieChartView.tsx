@@ -1,0 +1,36 @@
+import React from "react";
+import { createStyles, withStyles, WithStyles, Theme } from "@material-ui/core";
+import WeeklyChart, { ChartItem } from "./WeeklyChart";
+import ChartLegend from "./ChartLegend";
+
+const styles = (theme: Theme) =>
+  createStyles({
+    root: {
+      display: "flex",
+      padding: "0 30px"
+    },
+    [theme.breakpoints.down("sm")]: {
+      root: {
+        flexDirection: "column"
+      }
+    }
+  });
+
+interface PieChartViewProps extends WithStyles<typeof styles> {
+  items: ChartItem[];
+  onItemChange?: (id: string) => void;
+}
+
+class PieChartView extends React.Component<PieChartViewProps> {
+  render() {
+    const { classes, items, onItemChange } = this.props;
+
+    return (
+      <div className={classes.root}>
+        <WeeklyChart items={items} />
+        <ChartLegend onItemSelected={onItemChange} items={items} />
+      </div>
+    );
+  }
+}
+export default withStyles(styles)(PieChartView);

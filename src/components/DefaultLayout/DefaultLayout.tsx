@@ -16,7 +16,8 @@ import {
   WithStyles,
   Menu,
   MenuItem,
-  createMuiTheme
+  createMuiTheme,
+  Paper
 } from "@material-ui/core";
 
 import MenuIcon from "@material-ui/icons/Menu";
@@ -261,7 +262,12 @@ class DefaultLayout extends React.Component<DefaultLayoutProps> {
         </nav>
         <main className={classes.content}>
           <div className={classes.toolbar} />
-          <Container>{this.props.children}</Container>
+
+          <Container>
+            <Paper style={{ padding: "15px", borderRadius: 10 }}>
+              {this.props.children}
+            </Paper>
+          </Container>
         </main>
       </div>
     );

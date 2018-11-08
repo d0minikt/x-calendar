@@ -10,6 +10,7 @@ import HomePage from "./pages/Home/Home";
 import CounterPage from "./pages/Counter/Counter";
 import LoginPage from "./pages/Login/Login";
 import NotFoundPage from "./pages/NotFound/NotFound";
+import CalendarViewPage from "./pages/CalendarView/CalendarView";
 
 import { inject, observer } from "mobx-react";
 import {
@@ -73,6 +74,7 @@ class App extends Component<AppProps> {
         <Router history={this.history}>
           <Switch>
             <Route path="/" exact component={HomePage} />
+            <Route path="/calendar/:name" component={CalendarViewPage} />
             <Route path="/counter" exact component={CounterPage} />
             <Route component={NotFoundPage} />
           </Switch>
