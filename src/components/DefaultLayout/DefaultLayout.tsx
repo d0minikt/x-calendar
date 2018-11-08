@@ -24,6 +24,7 @@ import MenuIcon from "@material-ui/icons/Menu";
 import ViewWeekIcon from "@material-ui/icons/ViewWeek";
 import ExitToAppIcon from "@material-ui/icons/ExitToApp";
 import ColorLensIcon from "@material-ui/icons/ColorLens";
+import ListAltIcon from "@material-ui/icons/ListAltTwoTone";
 
 import { RouterStore } from "mobx-react-router";
 import { inject, observer } from "mobx-react";
@@ -40,7 +41,10 @@ class LayoutRoute {
   ) {}
 }
 
-const routes: LayoutRoute[] = [new LayoutRoute("/", "Week", <ViewWeekIcon />)];
+const routes: LayoutRoute[] = [
+  new LayoutRoute("/", "Week", <ViewWeekIcon />),
+  new LayoutRoute("/year", "Year", <ListAltIcon />)
+];
 
 const drawerWidth = 240;
 

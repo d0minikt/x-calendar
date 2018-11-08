@@ -8,6 +8,7 @@ import { syncHistoryWithStore, RouterStore } from "mobx-react-router";
 // pages
 import HomePage from "./pages/Home/Home";
 import CounterPage from "./pages/Counter/Counter";
+import YearViewPage from "./pages/YearView/YearView";
 import LoginPage from "./pages/Login/Login";
 import NotFoundPage from "./pages/NotFound/NotFound";
 import CalendarViewPage from "./pages/CalendarView/CalendarView";
@@ -76,6 +77,7 @@ class App extends Component<AppProps> {
             <Route path="/" exact component={HomePage} />
             <Route path="/calendar/:name" component={CalendarViewPage} />
             <Route path="/counter" exact component={CounterPage} />
+            <Route path="/year" exact component={YearViewPage} />
             <Route component={NotFoundPage} />
           </Switch>
         </Router>
