@@ -14,6 +14,7 @@ import { inject, observer } from "mobx-react";
 import { ApiStore } from "../../services/api/api.store";
 import { formatMinutes } from "../../services/api/calendar";
 import ColorDot from "../../components/ColorDot";
+import ItemTable from "../../ItemTable";
 
 const styles = () =>
   createStyles({
@@ -31,37 +32,15 @@ class YearViewPage extends React.Component<YearViewPageProps> {
     const { classes } = this.props;
     const { calendars } = this.props.api!;
 
-    const sortedCalendars = calendars
-      .slice()
-      .sort((a, b) => b.totalLength - a.totalLength)
-      .filter(c => c.totalLength > 0);
+    const items = calendars.map(c => ({
+      length: c.totalLength,
+      title: c.summary,
+      background: c.backgroundColor
+    }));
 
     return (
       <DefaultLayout>
-        <Table className={classes.table}>
-          <TableHead>
-            <TableRow>
-              <TableCell padding="checkbox">Color</TableCell>
-              <TableCell>Calendar Name</TableCell>
-              <TableCell>Time Spent</TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {sortedCalendars.map(c => {
-              return (
-                <TableRow key={c.id}>
-                  <TableCell padding="checkbox">
-                    <ColorDot color={c.backgroundColor} />
-                  </TableCell>
-                  <TableCell component="th" scope="row">
-                    {c.summary}
-                  </TableCell>
-                  <TableCell>{formatMinutes(c.totalLength, true)}</TableCell>
-                </TableRow>
-              );
-            })}
-          </TableBody>
-        </Table>
+        <ItemTable items={items} />
       </DefaultLayout>
     );
   }

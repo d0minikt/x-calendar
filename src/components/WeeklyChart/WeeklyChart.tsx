@@ -54,7 +54,7 @@ class WeeklyChart extends React.Component<WeeklyChartProps> {
           display: "flex",
           justifyContent: "center",
           alignItems: "center",
-          flex: "2 1 auto"
+          flex: "1 0 auto"
         }}
       >
         <VictoryPie
