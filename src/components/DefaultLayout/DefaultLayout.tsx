@@ -21,7 +21,7 @@ import {
 } from "@material-ui/core";
 
 import MenuIcon from "@material-ui/icons/Menu";
-import HomeIcon from "@material-ui/icons/Home";
+import ViewWeekIcon from "@material-ui/icons/ViewWeek";
 import ExitToAppIcon from "@material-ui/icons/ExitToApp";
 import ColorLensIcon from "@material-ui/icons/ColorLens";
 
@@ -40,7 +40,7 @@ class LayoutRoute {
   ) {}
 }
 
-const routes: LayoutRoute[] = [new LayoutRoute("/", "Home", <HomeIcon />)];
+const routes: LayoutRoute[] = [new LayoutRoute("/", "Week", <ViewWeekIcon />)];
 
 const drawerWidth = 240;
 

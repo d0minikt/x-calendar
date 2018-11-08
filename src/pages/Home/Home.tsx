@@ -78,7 +78,7 @@ class HomePage extends React.Component<HomePageProps> {
             <LeftIcon />
           </IconButton>
           <div style={{ textAlign: "center", padding: "10px 0" }}>
-            <Typography variant="h4">Weekly</Typography>
+            <Typography variant="h3">Weekly</Typography>
             <Typography variant="subtitle1">Week {week}</Typography>
           </div>
           <IconButton

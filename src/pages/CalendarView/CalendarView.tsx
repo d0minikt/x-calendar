@@ -91,8 +91,11 @@ class CalendarViewPage extends React.Component<
     return (
       <DefaultLayout>
         <div style={{ padding: "10px", textAlign: "center" }}>
-          <Typography variant="h4">{name}</Typography>
+          <Typography variant="h3">{name}</Typography>
         </div>
+        <Typography style={{ textAlign: "center", padding: 10 }} variant="h6">
+          This Week
+        </Typography>
         <PieChartView items={items} />
       </DefaultLayout>
     );
