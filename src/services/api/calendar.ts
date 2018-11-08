@@ -4,20 +4,12 @@ export const formatMinutes = (
   mins: number,
   includeDays: boolean = false
 ): string => {
-  if (includeDays) {
-    let d = Math.floor(mins / 60 / 24);
-    let h = Math.floor((mins / 60) % 24);
-    let m = mins % 60;
-    return `${d === 0 ? "" : `${d}d`} ${h === 0 ? "" : `${h}h`} ${
-      m === 0 ? "" : `${m}m`
-    }`;
-  } else {
-    let h = Math.floor(mins / 60);
-    let m = mins % 60;
-    if (h === 0) return m + "m";
-    if (m === 0) return h + "h";
-    return `${h}h ${m}m`;
-  }
+  const d = Math.floor(mins / 60 / 24);
+  const h = Math.floor(includeDays ? (mins / 60) % 24 : mins / 60);
+  const m = mins % 60;
+  return `${d === 0 || !includeDays ? "" : `${d}d`} ${h === 0 ? "" : `${h}h`} ${
+    m === 0 ? "" : `${m}m`
+  }`;
 };
 
 export class Calendar {
