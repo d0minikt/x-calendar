@@ -31,6 +31,7 @@ class YearViewPage extends React.Component<YearViewPageProps> {
     const { calendars } = this.props.api!;
 
     const sortedCalendars = calendars
+      .slice()
       .sort((a, b) => b.totalLength - a.totalLength)
       .filter(c => c.totalLength > 0);
 
