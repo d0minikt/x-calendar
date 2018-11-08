@@ -32,6 +32,7 @@ import { inject, observer } from "mobx-react";
 import Container from "../Container/Container";
 import { AppStore } from "../../services/app.store";
 import { ApiStore } from "../../services/api/api.store";
+import ColorDot from "../ColorDot";
 
 class LayoutRoute {
   constructor(
@@ -215,16 +216,8 @@ class DefaultLayout extends React.Component<DefaultLayoutProps> {
                   }}
                 >
                   <ListItemIcon>
-                    <div
-                      style={{
-                        width: 20,
-                        height: 20,
-                        borderRadius: "50%",
-                        border: `solid 2px ${
-                          isDark ? "rgba(255,255,255,.4)" : "rgba(0,0,0,.2)"
-                        }`,
-                        background: createMuiTheme(theme).palette.primary.main
-                      }}
+                    <ColorDot
+                      color={createMuiTheme(theme).palette.primary.main}
                     />
                   </ListItemIcon>
                   <ListItemText>

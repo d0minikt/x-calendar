@@ -13,6 +13,7 @@ import {
 } from "@material-ui/core";
 import { Trail } from "react-spring";
 import { ChartItem } from "./WeeklyChart";
+import ColorDot from "../ColorDot";
 
 interface ChartLegendProps {
   items: ChartItem[];
@@ -49,14 +50,7 @@ class ChartLegend extends React.Component<ChartLegendProps> {
               onClick={() => selectable && onItemSelected!(c.title)}
             >
               <ListItemIcon>
-                <div
-                  style={{
-                    width: 20,
-                    height: 20,
-                    borderRadius: "50%",
-                    background: c.background
-                  }}
-                />
+                <ColorDot color={c.background} />
               </ListItemIcon>
               <ListItemText
                 primary={c.title}

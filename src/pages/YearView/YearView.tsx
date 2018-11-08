@@ -13,6 +13,7 @@ import DefaultLayout from "../../components/DefaultLayout/DefaultLayout";
 import { inject, observer } from "mobx-react";
 import { ApiStore } from "../../services/api/api.store";
 import { formatMinutes } from "../../services/api/calendar";
+import ColorDot from "../../components/ColorDot";
 
 const styles = () =>
   createStyles({
@@ -40,6 +41,7 @@ class YearViewPage extends React.Component<YearViewPageProps> {
         <Table className={classes.table}>
           <TableHead>
             <TableRow>
+              <TableCell padding="checkbox">Color</TableCell>
               <TableCell>Calendar Name</TableCell>
               <TableCell>Time Spent</TableCell>
             </TableRow>
@@ -48,6 +50,9 @@ class YearViewPage extends React.Component<YearViewPageProps> {
             {sortedCalendars.map(c => {
               return (
                 <TableRow key={c.id}>
+                  <TableCell padding="checkbox">
+                    <ColorDot color={c.backgroundColor} />
+                  </TableCell>
                   <TableCell component="th" scope="row">
                     {c.summary}
                   </TableCell>
