@@ -1,9 +1,5 @@
 import React from "react";
-import {
-  Calendar,
-  formatMinutes,
-  totalLength
-} from "../../services/api/calendar";
+import { formatMinutes } from "../../services/api/calendar";
 import {
   List,
   ListSubheader,
@@ -11,7 +7,6 @@ import {
   ListItemIcon,
   ListItemText
 } from "@material-ui/core";
-import { Trail } from "react-spring";
 import ColorDot from "../ColorDot";
 import { ChartItem } from "../../services/ChartItem";
 
