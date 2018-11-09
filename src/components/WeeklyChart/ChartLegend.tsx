@@ -32,7 +32,7 @@ class ChartLegend extends React.Component<ChartLegendProps> {
     return (
       <List
         dense={true}
-        style={{ marginTop: 20 }}
+        style={{ marginTop: 20, minWidth: 270 }}
         subheader={<ListSubheader>Total: {formatMinutes(total)}</ListSubheader>}
       >
         {items.filter(it => it.length > 0).map((c, i) => (
