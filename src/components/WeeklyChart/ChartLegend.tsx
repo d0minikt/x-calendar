@@ -12,8 +12,8 @@ import {
   ListItemText
 } from "@material-ui/core";
 import { Trail } from "react-spring";
-import { ChartItem } from "./WeeklyChart";
 import ColorDot from "../ColorDot";
+import { ChartItem } from "../../services/ChartItem";
 
 interface ChartLegendProps {
   items: ChartItem[];
@@ -40,26 +40,23 @@ class ChartLegend extends React.Component<ChartLegendProps> {
         style={{ marginTop: 20 }}
         subheader={<ListSubheader>Total: {formatMinutes(total)}</ListSubheader>}
       >
-        {items
-          .filter(it => it.length > 0)
-          .sort((a, b) => b.length - a.length)
-          .map((c, i) => (
-            <ListItem
-              key={c.title}
-              button={selectable}
-              onClick={() => selectable && onItemSelected!(c.title)}
-            >
-              <ListItemIcon>
-                <ColorDot color={c.background} />
-              </ListItemIcon>
-              <ListItemText
-                primary={c.title}
-                secondary={
-                  getPercentage(c.length) + "% - " + formatMinutes(c.length)
-                }
-              />
-            </ListItem>
-          ))}
+        {items.filter(it => it.length > 0).map((c, i) => (
+          <ListItem
+            key={c.title}
+            button={selectable}
+            onClick={() => selectable && onItemSelected!(c.title)}
+          >
+            <ListItemIcon>
+              <ColorDot color={c.background} />
+            </ListItemIcon>
+            <ListItemText
+              primary={c.title}
+              secondary={
+                getPercentage(c.length) + "% - " + formatMinutes(c.length)
+              }
+            />
+          </ListItem>
+        ))}
       </List>
     );
   }

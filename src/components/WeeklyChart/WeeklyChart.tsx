@@ -1,13 +1,7 @@
 import React from "react";
 import { VictoryTooltip, VictoryPie, VictoryTheme } from "victory";
-import moment from "moment";
-import {
-  Calendar,
-  formatMinutes,
-  totalLength
-} from "../../services/api/calendar";
-import ChartLegend from "./ChartLegend";
-import styles from "./WeeklyChart.module.css";
+import { formatMinutes } from "../../services/api/calendar";
+import { ChartItem } from "../../services/ChartItem";
 
 interface CustomLabelProps {
   datum?: any;
@@ -29,14 +23,9 @@ class CustomLabel extends React.Component<CustomLabelProps> {
   }
 }
 
-export interface ChartItem {
-  background: string;
-  length: number;
-  title: string;
-}
-
 interface WeeklyChartProps {
   items: ChartItem[];
+  onItemSelected?: (id: string) => void;
 }
 
 class WeeklyChart extends React.Component<WeeklyChartProps> {
@@ -54,7 +43,8 @@ class WeeklyChart extends React.Component<WeeklyChartProps> {
           display: "flex",
           justifyContent: "center",
           alignItems: "center",
-          flex: "1 0 auto"
+          flex: "1 0 auto",
+          cursor: "pointer"
         }}
       >
         <VictoryPie
@@ -75,10 +65,31 @@ class WeeklyChart extends React.Component<WeeklyChartProps> {
           colorScale={items.filter(c => c.length > 0).map(c => c.background)}
           data={items.filter(it => it.length > 0).map(it => {
             return {
+              title: it.title,
               y: it.length,
               label: formatMinutes(it.length)
             };
           })}
+          events={[
+            {
+              target: "data",
+              eventHandlers: {
+                onClick: () => {
+                  return [
+                    {
+                      target: "data",
+                      mutation: props => {
+                        const { title } = props.datum;
+                        if (this.props.onItemSelected !== undefined)
+                          this.props.onItemSelected(title);
+                        return null;
+                      }
+                    }
+                  ];
+                }
+              }
+            }
+          ]}
         />
       </div>
     );

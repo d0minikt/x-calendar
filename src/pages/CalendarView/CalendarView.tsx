@@ -4,11 +4,11 @@ import { RouterStore } from "mobx-react-router";
 import { withRouter, RouteComponentProps } from "react-router-dom";
 import { ApiStore } from "../../services/api/api.store";
 import { Calendar } from "../../services/api/calendar";
-import { ChartItem } from "../../components/WeeklyChart/WeeklyChart";
 import DefaultLayout from "../../components/DefaultLayout/DefaultLayout";
 import PieChartView from "../../components/WeeklyChart/PieChartView";
 import { Typography } from "@material-ui/core";
 import moment from "moment";
+import { ChartItem } from "../../services/ChartItem";
 
 interface CalendarViewPageProps extends RouteComponentProps<any> {
   api?: ApiStore;

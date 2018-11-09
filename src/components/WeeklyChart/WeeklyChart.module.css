@@ -1,8 +1,0 @@
-.root {
-  display: flex;
-}
-@media screen and (max-width: 520px) {
-  .root {
-    flex-direction: column;
-  }
-}

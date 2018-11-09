@@ -1,7 +1,8 @@
 import React from "react";
 import { createStyles, withStyles, WithStyles, Theme } from "@material-ui/core";
-import WeeklyChart, { ChartItem } from "./WeeklyChart";
+import WeeklyChart from "./WeeklyChart";
 import ChartLegend from "./ChartLegend";
+import { sortChartItems, ChartItem } from "../../services/ChartItem";
 
 const styles = (theme: Theme) =>
   createStyles({
@@ -27,8 +28,11 @@ class PieChartView extends React.Component<PieChartViewProps> {
 
     return (
       <div className={classes.root}>
-        <WeeklyChart items={items} />
-        <ChartLegend onItemSelected={onItemChange} items={items} />
+        <WeeklyChart items={items} onItemSelected={onItemChange} />
+        <ChartLegend
+          onItemSelected={onItemChange}
+          items={items.slice().sort(sortChartItems)}
+        />
       </div>
     );
   }

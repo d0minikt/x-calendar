@@ -9,9 +9,9 @@ import {
   TableCell,
   TableBody
 } from "@material-ui/core";
-import { ChartItem } from "./components/WeeklyChart/WeeklyChart";
 import ColorDot from "./components/ColorDot";
 import { formatMinutes } from "./services/api/calendar";
+import { sortChartItems, ChartItem } from "./services/ChartItem";
 
 const styles = () => createStyles({});
 
@@ -26,7 +26,7 @@ class ItemTable extends React.Component<ItemTableProps> {
     const { items } = this.props;
 
     const processedItems = items
-      .sort((a, b) => b.length - a.length)
+      .sort(sortChartItems)
       .filter(it => it.length > 0);
 
     return (
