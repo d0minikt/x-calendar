@@ -9,17 +9,14 @@ import {
 } from "@material-ui/core";
 import { inject, observer } from "mobx-react";
 import { ApiStore } from "../../services/api/api.store";
-import moment, { Moment } from "moment";
+import moment from "moment";
 
 import LeftIcon from "@material-ui/icons/KeyboardArrowLeftOutlined";
 import RightIcon from "@material-ui/icons/KeyboardArrowRightOutlined";
-import {
-  totalLength,
-  isBetween,
-  CalendarEvent
-} from "../../services/api/calendar";
+import { totalLength, CalendarEvent } from "../../services/api/calendar";
 import { RouterStore } from "mobx-react-router";
 import PieChartView from "../../components/WeeklyChart/PieChartView";
+import { DateUtils } from "../../services/DateUtils";
 
 const styles = () => createStyles({});
 
@@ -27,8 +24,6 @@ interface HomePageProps extends WithStyles<typeof styles> {
   api?: ApiStore;
   router?: RouterStore;
 }
-
-const DISPLAY_FORMAT = "Do MMM";
 
 @inject("api", "router")
 @observer
@@ -45,19 +40,8 @@ class HomePage extends React.Component<HomePageProps> {
     this.setState({ week: this.state.week + 1 });
   };
 
-  getStart = (week: number): Moment =>
-    moment()
-      .set("isoWeek", week)
-      .startOf("isoWeek");
-
-  getEnd = (week: number): Moment =>
-    moment()
-      .set("isoWeek", week)
-      .endOf("isoWeek");
-
   lengthInWeek = (events: CalendarEvent[], week: number): number => {
-    const filter = isBetween(this.getStart(week), this.getEnd(week));
-    return totalLength(events.filter(filter));
+    return totalLength(events.filter(DateUtils.weekFilter(week)));
   };
 
   getTotal = (week: number) => {
@@ -80,10 +64,7 @@ class HomePage extends React.Component<HomePageProps> {
       background: c.backgroundColor,
       length: this.lengthInWeek(c.events, week)
     }));
-
-    const weekStartString = this.getStart(week).format(DISPLAY_FORMAT);
-    const weekEndString = this.getEnd(week).format(DISPLAY_FORMAT);
-    const weekRangeString = `${weekStartString} - ${weekEndString}`;
+    const weekRangeString = DateUtils.displayWeek(week);
 
     return (
       <DefaultLayout>

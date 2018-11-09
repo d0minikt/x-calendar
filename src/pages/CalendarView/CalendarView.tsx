@@ -8,7 +8,9 @@ import DefaultLayout from "../../components/DefaultLayout/DefaultLayout";
 import PieChartView from "../../components/WeeklyChart/PieChartView";
 import { Typography } from "@material-ui/core";
 import moment from "moment";
-import { ChartItem } from "../../services/ChartItem";
+import { ChartItem, toChartItem } from "../../services/ChartItem";
+import { DateUtils } from "../../services/DateUtils";
+import WeekReport from "../../components/WeekReport";
 
 interface CalendarViewPageProps extends RouteComponentProps<any> {
   api?: ApiStore;
@@ -64,21 +66,17 @@ class CalendarViewPage extends React.Component<
 
     const week = moment().isoWeek();
 
-    const events = calendar.events;
+    const events = calendar.events
+      .filter(DateUtils.weekFilter(week))
+      .map(toChartItem);
 
     for (let i in events) {
       const ev = events[i];
 
-      const chartItem: ChartItem = {
-        title: ev.summary,
-        background: "#fff",
-        length: ev.duration
-      };
-
-      if (chartItem.title in map) {
-        map[chartItem.title]!.length += chartItem.length;
+      if (ev.title in map) {
+        map[ev.title]!.length += ev.length;
       } else {
-        map[chartItem.title] = chartItem;
+        map[ev.title] = ev;
       }
     }
 
@@ -97,6 +95,12 @@ class CalendarViewPage extends React.Component<
           This Week
         </Typography>
         <PieChartView items={items} />
+        <Typography style={{ textAlign: "center", padding: 10 }} variant="h6">
+          Week Report
+        </Typography>
+        <WeekReport
+          events={calendar.events.filter(DateUtils.weekFilter(week))}
+        />
       </DefaultLayout>
     );
   }
