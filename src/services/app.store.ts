@@ -32,7 +32,7 @@ export class AppStore {
     },
     teal: {
       palette: {
-        background: { default: "#e5f9f4" },
+        background: { default: "#eceff1" },
         primary: { main: colors.teal["A400"] },
         secondary: { main: colors.cyan[500] }
       },

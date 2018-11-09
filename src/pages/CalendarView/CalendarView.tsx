@@ -21,7 +21,7 @@ const genColors = (length: number) => {
   const scalar = 255 / (length + 3);
   return Array.from({ length }, (x, i) => {
     const c = Math.floor((i + 2) * scalar);
-    return `rgba(${c * 1.1},${c * 0.9},${c})`;
+    return `rgb(${c},${c},${c})`;
   });
 };
 
