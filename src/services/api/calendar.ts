@@ -12,6 +12,11 @@ export const formatMinutes = (
   }`;
 };
 
+export const toHours = (mins: number): string => {
+  if (mins < 60) return `${mins}m`;
+  return `${Math.floor(mins / 60)}h`;
+};
+
 export class Calendar {
   static fromObject(calendar: any, events: CalendarEvent[]): Calendar {
     return new Calendar(

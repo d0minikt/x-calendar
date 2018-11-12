@@ -10,7 +10,7 @@ import {
   TableBody
 } from "@material-ui/core";
 import ColorDot from "./components/ColorDot";
-import { formatMinutes } from "./services/api/calendar";
+import { formatMinutes, toHours } from "./services/api/calendar";
 import { sortChartItems, ChartItem } from "./services/ChartItem";
 
 const styles = () => createStyles({});
@@ -49,9 +49,7 @@ class ItemTable extends React.Component<ItemTableProps> {
                 <TableCell component="th" scope="row">
                   {it.title}
                 </TableCell>
-                <TableCell padding="checkbox">
-                  {formatMinutes(it.length, true)}
-                </TableCell>
+                <TableCell padding="checkbox">{toHours(it.length)}</TableCell>
                 <TableCell padding="checkbox">
                   {Math.round((it.length / this.getTotal()) * 100)}%
                 </TableCell>
