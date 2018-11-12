@@ -35,10 +35,16 @@ class HomePage extends React.Component<
     week: moment().isoWeek()
   };
 
+  get previousExists(): boolean {
+    return this.getTotal(this.state.week - 1) > 0;
+  }
+  get nextExists(): boolean {
+    return moment().isoWeek() !== this.state.week;
+  }
+
   previousWeek = () => {
     this.updateUrl(this.getParamDate().subtract(1, "week"));
   };
-
   nextWeek = () => {
     this.updateUrl(this.getParamDate().add(1, "week"));
   };
@@ -46,7 +52,6 @@ class HomePage extends React.Component<
   lengthInWeek = (events: CalendarEvent[], week: number): number => {
     return totalLength(events.filter(DateUtils.weekFilter(week)));
   };
-
   getTotal = (week: number) => {
     return this.props
       .api!.calendars.map(c => this.lengthInWeek(c.events, week))
@@ -63,7 +68,6 @@ class HomePage extends React.Component<
   updateUrl = (date: Moment) => {
     this.props.history.replace(`/week?date=${date.format("YYYY[W]WW")}`);
   };
-
   getParamDate = (): Moment => {
     const { search } = this.props.location;
     const parsedSearch = new URLSearchParams(search);
@@ -86,13 +90,19 @@ class HomePage extends React.Component<
   componentWillMount() {
     this.ensureDateSpecified();
   }
-
   componentDidUpdate(prevProps: HomePageProps & RouteComponentProps<any>) {
     if (prevProps.location.search !== this.props.location.search) {
       this.ensureDateSpecified();
       const date = this.getParamDate();
       this.setState({ week: date.isoWeek() });
     }
+  }
+
+  componentDidMount() {
+    document.addEventListener("keyup", (ev: KeyboardEvent) => {
+      if (ev.key === "ArrowLeft" && this.previousExists) this.previousWeek();
+      if (ev.key === "ArrowRight" && this.nextExists) this.nextWeek();
+    });
   }
 
   render() {
@@ -117,7 +127,7 @@ class HomePage extends React.Component<
           }}
         >
           <IconButton
-            disabled={this.getTotal(week - 1) === 0}
+            disabled={!this.previousExists}
             onClick={this.previousWeek}
           >
             <LeftIcon />
@@ -126,10 +136,7 @@ class HomePage extends React.Component<
             <Typography variant="h3">Weekly</Typography>
             <Typography variant="subtitle1">{weekRangeString}</Typography>
           </div>
-          <IconButton
-            disabled={moment().isoWeek() === week}
-            onClick={this.nextWeek}
-          >
+          <IconButton disabled={this.nextExists} onClick={this.nextWeek}>
             <RightIcon />
           </IconButton>
         </div>
