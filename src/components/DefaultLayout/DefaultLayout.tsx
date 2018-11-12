@@ -25,6 +25,7 @@ import ViewWeekIcon from "@material-ui/icons/ViewWeek";
 import ExitToAppIcon from "@material-ui/icons/ExitToApp";
 import ColorLensIcon from "@material-ui/icons/ColorLens";
 import ListAltIcon from "@material-ui/icons/ListAltTwoTone";
+import CalendarTodayIcon from "@material-ui/icons/CalendarToday";
 
 import { RouterStore } from "mobx-react-router";
 import { inject, observer } from "mobx-react";
@@ -196,6 +197,14 @@ class DefaultLayout extends React.Component<DefaultLayoutProps> {
               {this.state.title}
             </Typography>
             <div style={{ flex: "1 1" }} />
+            <IconButton
+              type="a"
+              target="_blank"
+              href="https://calendar.google.com/calendar"
+              color="inherit"
+            >
+              <CalendarTodayIcon />
+            </IconButton>
             <IconButton color="inherit" onClick={this.openMenu}>
               <ColorLensIcon />
             </IconButton>
