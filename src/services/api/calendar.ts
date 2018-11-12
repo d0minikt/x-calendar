@@ -43,7 +43,7 @@ export const totalLength = (events: CalendarEvent[]): number => {
 export const isBetween = (min: Moment, max: Moment) => (event: CalendarEvent) =>
   moment(event.start).isAfter(min) &&
   moment(event.end).isBefore(max) &&
-  moment(event.end).isBefore(moment());
+  moment(event.start).isBefore(moment());
 
 export class CalendarEvent {
   static fromObject(ev: any): CalendarEvent {
