@@ -54,7 +54,7 @@ class CalendarViewPage extends React.Component<
       const calendar = this.getSelectedCalendar();
       this.setState({ calendar });
     } catch (err) {
-      this.props.router!.history.push("/");
+      this.props.router!.history.push("/week");
     }
   }
 
@@ -75,6 +75,18 @@ class CalendarViewPage extends React.Component<
       `/week?date=${this.getParamDate().format("YYYY[W]WW")}`
     );
   };
+
+  componentWillMount() {
+    const { search } = this.props.location;
+    const parsedSearch = new URLSearchParams(search);
+
+    let date: Moment = moment();
+    if (parsedSearch.has("date")) {
+      date = moment(parsedSearch.get("date")!);
+    } else {
+      this.updateUrl(date);
+    }
+  }
 
   render() {
     const { calendar } = this.state;
