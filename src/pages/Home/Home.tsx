@@ -37,12 +37,10 @@ class HomePage extends React.Component<
 
   previousWeek = () => {
     this.updateUrl(this.getParamDate().subtract(1, "week"));
-    this.setState({ week: this.state.week - 1 });
   };
 
   nextWeek = () => {
     this.updateUrl(this.getParamDate().add(1, "week"));
-    this.setState({ week: this.state.week + 1 });
   };
 
   lengthInWeek = (events: CalendarEvent[], week: number): number => {
@@ -72,7 +70,7 @@ class HomePage extends React.Component<
     return moment(parsedSearch.get("date")!);
   };
 
-  componentWillMount() {
+  ensureDateSpecified = () => {
     const { search } = this.props.location;
     const parsedSearch = new URLSearchParams(search);
 
@@ -82,6 +80,18 @@ class HomePage extends React.Component<
       this.setState({ week: date.isoWeek() });
     } else {
       this.updateUrl(date);
+    }
+  };
+
+  componentWillMount() {
+    this.ensureDateSpecified();
+  }
+
+  componentDidUpdate(prevProps: HomePageProps & RouteComponentProps<any>) {
+    if (prevProps.location.search !== this.props.location.search) {
+      this.ensureDateSpecified();
+      const date = this.getParamDate();
+      this.setState({ week: date.isoWeek() });
     }
   }
 
