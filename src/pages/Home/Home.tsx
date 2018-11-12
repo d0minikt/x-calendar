@@ -98,11 +98,17 @@ class HomePage extends React.Component<
     }
   }
 
+  handleKeyUp = (ev: KeyboardEvent) => {
+    if (ev.key === "ArrowLeft" && this.previousExists) this.previousWeek();
+    if (ev.key === "ArrowRight" && this.nextExists) this.nextWeek();
+  };
+
   componentDidMount() {
-    document.addEventListener("keyup", (ev: KeyboardEvent) => {
-      if (ev.key === "ArrowLeft" && this.previousExists) this.previousWeek();
-      if (ev.key === "ArrowRight" && this.nextExists) this.nextWeek();
-    });
+    document.addEventListener("keyup", this.handleKeyUp);
+  }
+
+  componentWillUnmount() {
+    document.removeEventListener("keyup", this.handleKeyUp);
   }
 
   render() {
