@@ -12,6 +12,7 @@ import { ChartItem, toChartItem } from "../../services/ChartItem";
 import { DateUtils } from "../../services/DateUtils";
 import WeekReport from "../../components/WeekReport";
 import ArrowBackIcon from "@material-ui/icons/ArrowBack";
+import WeekdayUsage from "../../components/WeekdayUsage";
 
 interface CalendarViewPageProps extends RouteComponentProps<any> {
   api?: ApiStore;
@@ -88,9 +89,24 @@ class CalendarViewPage extends React.Component<
     }
   }
 
+  getWeekdayData = (): number[] => {
+    const { calendar } = this.state;
+    const date = this.getParamDate();
+    const week = date.isoWeek();
+
+    const data: number[] = [];
+    for (const event of calendar.events.filter(DateUtils.weekFilter(week))) {
+      const index = moment(event.start).isoWeekday() - 1;
+      if (!(index in data)) data[index] = event.duration;
+      else data[index] += event.duration;
+    }
+    return data;
+  };
+
   render() {
     const { calendar } = this.state;
     const { name } = this.props.match.params;
+    const weekdayData = this.getWeekdayData();
 
     const date = this.getParamDate();
     const week = date.isoWeek();
@@ -140,6 +156,9 @@ class CalendarViewPage extends React.Component<
           <div />
         </div>
         <PieChartView items={items} />
+        <div style={{ marginTop: "-120px" }}>
+          <WeekdayUsage data={weekdayData} />
+        </div>
         <Typography style={{ textAlign: "center", padding: 10 }} variant="h6">
           Week Report
         </Typography>
