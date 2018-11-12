@@ -43,7 +43,7 @@ class LayoutRoute {
 }
 
 const routes: LayoutRoute[] = [
-  new LayoutRoute("/", "Week", <ViewWeekIcon />),
+  new LayoutRoute("/week", "Week", <ViewWeekIcon />),
   new LayoutRoute("/year", "Year", <ListAltIcon />)
 ];
 

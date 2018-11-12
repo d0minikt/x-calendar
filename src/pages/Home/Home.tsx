@@ -9,7 +9,7 @@ import {
 } from "@material-ui/core";
 import { inject, observer } from "mobx-react";
 import { ApiStore } from "../../services/api/api.store";
-import moment from "moment";
+import moment, { Moment } from "moment";
 
 import LeftIcon from "@material-ui/icons/KeyboardArrowLeftOutlined";
 import RightIcon from "@material-ui/icons/KeyboardArrowRightOutlined";
@@ -17,6 +17,7 @@ import { totalLength, CalendarEvent } from "../../services/api/calendar";
 import { RouterStore } from "mobx-react-router";
 import PieChartView from "../../components/WeeklyChart/PieChartView";
 import { DateUtils } from "../../services/DateUtils";
+import { withRouter, RouteComponentProps } from "react-router";
 
 const styles = () => createStyles({});
 
@@ -27,16 +28,20 @@ interface HomePageProps extends WithStyles<typeof styles> {
 
 @inject("api", "router")
 @observer
-class HomePage extends React.Component<HomePageProps> {
+class HomePage extends React.Component<
+  HomePageProps & RouteComponentProps<any>
+> {
   state = {
     week: moment().isoWeek()
   };
 
   previousWeek = () => {
+    this.updateUrl(this.getParamDate().subtract(1, "week"));
     this.setState({ week: this.state.week - 1 });
   };
 
   nextWeek = () => {
+    this.updateUrl(this.getParamDate().add(1, "week"));
     this.setState({ week: this.state.week + 1 });
   };
 
@@ -51,12 +56,38 @@ class HomePage extends React.Component<HomePageProps> {
   };
 
   handleItemChange = (name: string) => {
-    this.props.router!.history.push(`/calendar/${name}`);
+    const date = this.getParamDate();
+    this.props.router!.history.push(
+      `/calendar/${name}/?date=${date.format("YYYY[W]WW")}`
+    );
   };
 
+  updateUrl = (date: Moment) => {
+    this.props.history.replace(`/week?date=${date.format("YYYY[W]WW")}`);
+  };
+
+  getParamDate = (): Moment => {
+    const { search } = this.props.location;
+    const parsedSearch = new URLSearchParams(search);
+    return moment(parsedSearch.get("date")!);
+  };
+
+  componentWillMount() {
+    const { search } = this.props.location;
+    const parsedSearch = new URLSearchParams(search);
+
+    let date: Moment = moment();
+    if (parsedSearch.has("date")) {
+      date = moment(parsedSearch.get("date")!);
+      this.setState({ week: date.isoWeek() });
+    } else {
+      this.updateUrl(date);
+    }
+  }
+
   render() {
-    const { classes } = this.props;
     const { week } = this.state;
+    const { classes } = this.props;
     const { calendars } = this.props.api!;
 
     const calendarItems = calendars.map(c => ({
@@ -101,4 +132,4 @@ class HomePage extends React.Component<HomePageProps> {
   }
 }
 
-export default withStyles(styles)(HomePage);
+export default withRouter(withStyles(styles)(HomePage));

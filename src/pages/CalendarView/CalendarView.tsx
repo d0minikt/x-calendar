@@ -6,11 +6,12 @@ import { ApiStore } from "../../services/api/api.store";
 import { Calendar } from "../../services/api/calendar";
 import DefaultLayout from "../../components/DefaultLayout/DefaultLayout";
 import PieChartView from "../../components/WeeklyChart/PieChartView";
-import { Typography } from "@material-ui/core";
-import moment from "moment";
+import { Typography, IconButton } from "@material-ui/core";
+import moment, { Moment } from "moment";
 import { ChartItem, toChartItem } from "../../services/ChartItem";
 import { DateUtils } from "../../services/DateUtils";
 import WeekReport from "../../components/WeekReport";
+import ArrowBackIcon from "@material-ui/icons/ArrowBack";
 
 interface CalendarViewPageProps extends RouteComponentProps<any> {
   api?: ApiStore;
@@ -35,6 +36,19 @@ class CalendarViewPage extends React.Component<
     calendar: new Calendar("", "", "", [])
   };
 
+  updateUrl = (date: Moment) => {
+    const { name } = this.props.match.params;
+    this.props.history.replace(
+      `/calendar/${name}/?date=${date.format("YYYY[W]WW")}`
+    );
+  };
+
+  getParamDate = (): Moment => {
+    const { search } = this.props.location;
+    const parsedSearch = new URLSearchParams(search);
+    return moment(parsedSearch.get("date")!);
+  };
+
   componentDidMount() {
     try {
       const calendar = this.getSelectedCalendar();
@@ -56,15 +70,22 @@ class CalendarViewPage extends React.Component<
     throw Error();
   }
 
+  switchToAllWeekView = () => {
+    this.props.history.push(
+      `/week?date=${this.getParamDate().format("YYYY[W]WW")}`
+    );
+  };
+
   render() {
     const { calendar } = this.state;
     const { name } = this.props.match.params;
 
+    const date = this.getParamDate();
+    const week = date.isoWeek();
+
     const map: { [key: string]: ChartItem } = {};
 
     if (Object.keys(calendar.events).length === 0) return "";
-
-    const week = moment().isoWeek();
 
     const events = calendar.events
       .filter(DateUtils.weekFilter(week))
@@ -88,12 +109,24 @@ class CalendarViewPage extends React.Component<
 
     return (
       <DefaultLayout>
-        <div style={{ padding: "10px", textAlign: "center" }}>
-          <Typography variant="h3">{name}</Typography>
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "space-between"
+          }}
+        >
+          <IconButton onClick={this.switchToAllWeekView}>
+            <ArrowBackIcon />
+          </IconButton>
+          <div style={{ padding: "10px 0 0", textAlign: "center" }}>
+            <Typography variant="h3">{name}</Typography>
+            <Typography variant="subtitle1">
+              {DateUtils.displayWeek(week)}
+            </Typography>
+          </div>
+          <div />
         </div>
-        <Typography style={{ textAlign: "center", padding: 10 }} variant="h6">
-          This Week
-        </Typography>
         <PieChartView items={items} />
         <Typography style={{ textAlign: "center", padding: 10 }} variant="h6">
           Week Report

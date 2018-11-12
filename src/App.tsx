@@ -2,7 +2,7 @@ import React, { Component } from "react";
 
 // routing
 import { createBrowserHistory } from "history";
-import { Router, Switch, Route } from "react-router";
+import { Router, Switch, Route, Redirect } from "react-router";
 import { syncHistoryWithStore, RouterStore } from "mobx-react-router";
 
 // pages
@@ -74,8 +74,9 @@ class App extends Component<AppProps> {
       <div className={classes.root}>
         <Router history={this.history}>
           <Switch>
-            <Route path="/" exact component={HomePage} />
-            <Route path="/calendar/:name" component={CalendarViewPage} />
+            <Route path="/week" exact component={HomePage} />
+            <Route path="/" exact component={() => <Redirect to="/week" />} />
+            <Route path="/calendar/:name" exact component={CalendarViewPage} />
             <Route path="/counter" exact component={CounterPage} />
             <Route path="/year" exact component={YearViewPage} />
             <Route component={NotFoundPage} />
