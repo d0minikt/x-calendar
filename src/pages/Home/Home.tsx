@@ -136,7 +136,7 @@ class HomePage extends React.Component<
             <Typography variant="h3">Weekly</Typography>
             <Typography variant="subtitle1">{weekRangeString}</Typography>
           </div>
-          <IconButton disabled={this.nextExists} onClick={this.nextWeek}>
+          <IconButton disabled={!this.nextExists} onClick={this.nextWeek}>
             <RightIcon />
           </IconButton>
         </div>
