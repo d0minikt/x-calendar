@@ -16,7 +16,7 @@ export class AppStore {
     },
     indigo: {
       palette: {
-        background: { default: "#e2e7ff" },
+        background: { default: "#ECEFF1" },
         primary: { main: colors.indigo[500] },
         secondary: { main: colors.teal[500] }
       },
@@ -32,7 +32,7 @@ export class AppStore {
     },
     teal: {
       palette: {
-        background: { default: "#eceff1" },
+        background: { default: "#ECEFF1" },
         primary: { main: colors.teal["A400"] },
         secondary: { main: colors.cyan[500] }
       },
@@ -61,7 +61,7 @@ export class AppStore {
     },
     "light pink": {
       palette: {
-        background: { default: "#fff", paper: "#ffedf3" },
+        background: { default: "#fff", paper: "#ECEFF1" },
         primary: { main: "#ffc1d8" },
         secondary: { main: colors.pink["A400"] }
       },
@@ -69,7 +69,7 @@ export class AppStore {
     },
     purple: {
       palette: {
-        background: { paper: "#fff", default: "#e7d7ea" },
+        background: { paper: "#fff", default: "#ECEFF1" },
         primary: colors.purple,
         secondary: colors.indigo
       },
